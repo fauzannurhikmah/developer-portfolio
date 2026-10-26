@@ -64,7 +64,7 @@
         <a href="#signal" class="nav-link">Signal</a>
       </nav>
 
-      <!-- Nav Controls: Audio Toggle & Command HUD Trigger -->
+      <!-- Nav Controls: Audio Toggle, Command HUD Trigger & Mobile Hamburger -->
       <div class="nav-controls">
         <button type="button" class="audio-toggle-btn" id="audioToggleBtn" title="Toggle Tactile Audio FX">
           <div class="equalizer-bars">
@@ -80,12 +80,110 @@
           <kbd class="kbd-badge">⌘K</kbd>
         </button>
 
-        <a href="#signal" class="btn btn-primary btn-sm" style="padding: 8px 18px; font-size: 0.82rem;">
+        <a href="#signal" class="btn btn-primary btn-sm nav-connect-btn" style="padding: 8px 18px; font-size: 0.82rem;">
           <span>Connect</span>
         </a>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button type="button" class="nav-mobile-toggle" id="mobileMenuToggle" aria-label="Toggle Mobile Navigation" aria-expanded="false">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
       </div>
     </div>
   </header>
+
+  <!-- =========================================================================
+       MOBILE NAVIGATION DRAWER (RESPONSIVE HUD)
+       ========================================================================= -->
+  <div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
+  <aside class="mobile-nav-drawer" id="mobileNavDrawer" aria-label="Mobile Navigation Menu" aria-hidden="true">
+    <div class="mobile-drawer-header">
+      <div class="brand-text">
+        ALEX.PRATAMA<span>SYS.ENG</span>
+      </div>
+      <button type="button" class="mobile-drawer-close" id="mobileDrawerClose" aria-label="Close Mobile Navigation">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Telemetry Strip -->
+    <div class="mobile-drawer-telemetry">
+      <div class="nav-status-badge">
+        <span class="status-dot-pulse"></span>
+        <span>AVAILABLE FOR ROLES</span>
+      </div>
+      <span class="mobile-clock font-mono" id="mobileLiveClock">--:--:-- WIB</span>
+    </div>
+
+    <!-- Mobile Navigation Links -->
+    <nav class="mobile-drawer-links">
+      <a href="#overview" class="mobile-nav-link">
+        <span class="mobile-nav-idx">[01]</span>
+        <span class="mobile-nav-title">Overview & Core</span>
+        <span class="mobile-nav-arrow">&rarr;</span>
+      </a>
+      <a href="#architecture" class="mobile-nav-link">
+        <span class="mobile-nav-idx">[02]</span>
+        <span class="mobile-nav-title">Architecture & Doctrine</span>
+        <span class="mobile-nav-arrow">&rarr;</span>
+      </a>
+      <a href="#skills" class="mobile-nav-link">
+        <span class="mobile-nav-idx">[03]</span>
+        <span class="mobile-nav-title">Technical Arsenal</span>
+        <span class="mobile-nav-arrow">&rarr;</span>
+      </a>
+      <a href="#projects" class="mobile-nav-link">
+        <span class="mobile-nav-idx">[04]</span>
+        <span class="mobile-nav-title">Flagship Systems</span>
+        <span class="mobile-nav-arrow">&rarr;</span>
+      </a>
+      <a href="#chronicle" class="mobile-nav-link">
+        <span class="mobile-nav-idx">[05]</span>
+        <span class="mobile-nav-title">Career Chronicle</span>
+        <span class="mobile-nav-arrow">&rarr;</span>
+      </a>
+      <a href="#audits" class="mobile-nav-link">
+        <span class="mobile-nav-idx">[06]</span>
+        <span class="mobile-nav-title">Audit & Endorsements</span>
+        <span class="mobile-nav-arrow">&rarr;</span>
+      </a>
+      <a href="#signal" class="mobile-nav-link">
+        <span class="mobile-nav-idx">[07]</span>
+        <span class="mobile-nav-title">Transmission Signal</span>
+        <span class="mobile-nav-arrow">&rarr;</span>
+      </a>
+    </nav>
+
+    <!-- Mobile Drawer Actions -->
+    <div class="mobile-drawer-actions">
+      <button type="button" class="mobile-action-btn mobile-audio-toggle" id="mobileAudioToggleBtn">
+        <div class="equalizer-bars">
+          <span class="eq-bar"></span>
+          <span class="eq-bar"></span>
+          <span class="eq-bar"></span>
+        </div>
+        <span id="mobileAudioStatusText">FX OFF</span>
+      </button>
+
+      <button type="button" class="mobile-action-btn open-palette-btn">
+        <span>Command HUD</span>
+        <kbd class="kbd-badge">⌘K</kbd>
+      </button>
+
+      <a href="#signal" class="btn btn-primary mobile-nav-connect" style="width: 100%; justify-content: center;">
+        <span>Initialize Signal</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+  </aside>
 
   <!-- =========================================================================
        MAIN CONTENT

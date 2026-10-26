@@ -587,6 +587,228 @@ h1, h2, h3, h4, .font-display {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Mobile Hamburger Toggle Button */
+.nav-mobile-toggle {
+  display: none;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  width: 38px;
+  height: 38px;
+  padding: 8px 7px;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  transition: all var(--transition-fast);
+  color: #fff;
+  z-index: 1002;
+}
+
+.nav-mobile-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--accent-cyan);
+}
+
+.hamburger-bar {
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: all 0.25s var(--ease-cinematic);
+}
+
+.nav-mobile-toggle.active .hamburger-bar:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.nav-mobile-toggle.active .hamburger-bar:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.nav-mobile-toggle.active .hamburger-bar:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Mobile Drawer Overlay Backdrop */
+.mobile-nav-backdrop {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(3, 5, 10, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 1500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-nav-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Mobile Navigation Drawer Sheet */
+.mobile-nav-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(88vw, 360px);
+  height: 100vh;
+  height: 100dvh;
+  background: rgba(8, 12, 22, 0.98);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border-left: 1px solid var(--border-titanium);
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(6, 182, 212, 0.15);
+  z-index: 1501;
+  transform: translateX(100%);
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 20px calc(24px + env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-nav-drawer.active {
+  transform: translateX(0);
+}
+
+.mobile-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 16px;
+}
+
+.mobile-drawer-close {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.mobile-drawer-close:hover {
+  color: #fff;
+  border-color: var(--accent-rose);
+  background: rgba(244, 63, 94, 0.15);
+}
+
+.mobile-drawer-telemetry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 20px;
+}
+
+.mobile-clock {
+  font-size: 0.75rem;
+  color: var(--accent-cyan);
+}
+
+.mobile-drawer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  margin-bottom: 24px;
+}
+
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link:active {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-subtle);
+  color: #fff;
+}
+
+.mobile-nav-idx {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent-cyan);
+  min-width: 28px;
+}
+
+.mobile-nav-title {
+  flex: 1;
+}
+
+.mobile-nav-arrow {
+  color: var(--text-dim);
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.mobile-nav-link:hover .mobile-nav-arrow {
+  transform: translateX(4px);
+  color: var(--accent-cyan);
+}
+
+.mobile-drawer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.mobile-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.mobile-action-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-color: var(--border-titanium);
+}
+
+.mobile-action-btn.active {
+  background: rgba(6, 182, 212, 0.12);
+  border-color: rgba(6, 182, 212, 0.4);
+  color: var(--accent-cyan);
+}
+
 /* --------------------------------------------------------------------------
    5. Buttons & Tactile UI
    -------------------------------------------------------------------------- */
@@ -2093,56 +2315,575 @@ h1, h2, h3, h4, .font-display {
 }
 
 /* --------------------------------------------------------------------------
-   17. Responsive Mobile Optimizations
+   17. Comprehensive Mobile & Responsive Engineering
    -------------------------------------------------------------------------- */
-@media (max-width: 768px) {
-  .hero-section {
-    padding-top: calc(var(--nav-height) + 24px);
-    padding-bottom: 60px;
+
+/* Safe area insets & Global Viewport Constraints */
+html, body {
+  overflow-x: hidden !important;
+  max-width: 100vw;
+  width: 100%;
+}
+
+/* Interactive Canvas Touch Optimization */
+#hyperCanvasDemo {
+  touch-action: none; /* Prevents scroll interception during finger drawing */
+}
+
+/* ==========================================================================
+   Breakpoint: Tablets & Small Desktops (max-width: 1024px)
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
   }
-  .section {
-    padding-top: 70px;
-    padding-bottom: 70px;
-  }
-  .hero-title {
-    font-size: 2.3rem;
-  }
+
   .terminal-window {
     height: 480px;
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
   }
-  .bento-card {
-    padding: 24px;
+
+  .skills-matrix-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
+
+  .project-feature-card,
+  .project-feature-card.reverse {
+    grid-template-columns: 1fr;
+  }
+
+  .project-feature-card.reverse .project-stage {
+    order: 1;
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .project-feature-card.reverse .project-details {
+    order: 2;
+  }
+
   .project-stage {
-    padding: 20px;
-    min-height: 280px;
-  }
-  .project-details {
-    padding: 24px;
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+    min-height: 320px;
   }
 }
 
-@media (max-width: 480px) {
-  .nav-container {
-    padding: 0 12px;
+/* ==========================================================================
+   Breakpoint: Tablets & Mobile Landscape (max-width: 860px)
+   ========================================================================== */
+@media (max-width: 860px) {
+  .navbar {
+    top: 10px;
+    padding: 0 16px;
   }
+
+  .nav-container {
+    height: 58px;
+    padding: 0 14px;
+  }
+
+  .nav-links {
+    display: none !important;
+  }
+
+  .nav-mobile-toggle {
+    display: flex;
+  }
+
+  .nav-controls .nav-connect-btn {
+    display: none;
+  }
+
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bento-col-8,
+  .bento-col-4,
+  .bento-col-12 {
+    grid-column: span 1;
+  }
+
+  .contact-terminal-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* ==========================================================================
+   Breakpoint: Standard Mobile Devices (max-width: 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .section {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .hero-section {
+    padding-top: calc(var(--nav-height) + 16px);
+    padding-bottom: 48px;
+  }
+
+  .section-header {
+    margin-bottom: 36px;
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 6.5vw, 2.4rem);
+    line-height: 1.18;
+  }
+
+  .section-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 7.8vw, 3rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    word-break: break-word;
+  }
+
+  .hero-lead {
+    font-size: 0.98rem;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+
+  .hero-actions {
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+
+  .hero-actions .btn {
+    flex: 1 1 100%;
+    width: 100%;
+    padding: 12px 18px;
+    font-size: 0.88rem;
+  }
+
+  .telemetry-strip {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 28px;
+    padding-top: 24px;
+  }
+
+  .telemetry-value {
+    font-size: 1.4rem;
+  }
+
+  .telemetry-label {
+    font-size: 0.72rem;
+  }
+
+  /* Neural Architecture Terminal Mobile Optimizations */
+  .terminal-window {
+    height: 460px;
+    border-radius: var(--radius-sm);
+  }
+
+  .terminal-header {
+    padding: 0 12px;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .terminal-header::-webkit-scrollbar {
+    display: none;
+  }
+
+  .terminal-tabs {
+    display: flex !important;
+    gap: 4px;
+  }
+
+  .term-tab {
+    padding: 4px 8px;
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+
+  .terminal-body {
+    padding: 14px;
+    font-size: 0.78rem;
+  }
+
+  .term-chip-bar {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px 12px;
+    gap: 6px;
+  }
+
+  .term-chip-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .term-chip {
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 4px 8px;
+    font-size: 0.7rem;
+  }
+
+  /* Bento Grid Mobile */
+  .bento-card {
+    padding: 20px;
+    border-radius: var(--radius-sm);
+  }
+
+  .bento-title {
+    font-size: 1.25rem;
+  }
+
+  .doctrine-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .doctrine-item {
+    padding: 14px;
+  }
+
+  .graph-label-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  /* Skills Matrix Mobile */
+  .filter-tabs-container {
+    gap: 6px;
+    margin-bottom: 28px;
+  }
+
+  .skill-filter-btn {
+    padding: 6px 14px;
+    font-size: 0.76rem;
+  }
+
+  .skills-matrix-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .skill-card-item {
+    padding: 20px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Project Cards Mobile */
+  .project-feature-card {
+    border-radius: var(--radius-md);
+  }
+
+  .project-stage {
+    padding: 18px 14px;
+    min-height: 260px;
+  }
+
+  .project-details {
+    padding: 22px 18px;
+  }
+
+  .project-card-title {
+    font-size: 1.45rem;
+    line-height: 1.25;
+  }
+
+  .project-card-description {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+
+  .project-specs-list li {
+    font-size: 0.82rem;
+  }
+
+  .project-tech-chips {
+    margin-bottom: 20px;
+  }
+
+  /* Oscilloscope simulation mobile */
+  .oscilloscope-box {
+    height: 190px;
+  }
+
+  .cluster-pills-row {
+    gap: 6px;
+  }
+
+  .cluster-pill {
+    font-size: 0.68rem;
+    padding: 3px 8px;
+  }
+
+  /* Ledger simulation mobile */
+  .ledger-node {
+    padding: 10px 14px;
+  }
+
+  .hash-signature-strip {
+    flex-direction: column;
+    gap: 4px;
+    word-break: break-all;
+  }
+
+  /* DAG Workflow Box mobile */
+  .dag-workflow-box {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 14px 10px;
+  }
+
+  .dag-nodes-container {
+    min-width: 320px;
+    gap: 6px;
+  }
+
+  .dag-node-item {
+    padding: 6px 8px;
+    font-size: 0.68rem;
+  }
+
+  /* HyperCanvas Mobile */
+  .hypercanvas-container {
+    height: 210px;
+  }
+
+  .canvas-cursor-tag {
+    font-size: 0.62rem;
+    padding: 2px 4px;
+  }
+
+  .canvas-toolbar {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    font-size: 0.68rem;
+  }
+
+  /* Timeline Mobile */
+  .timeline-track::before {
+    left: 14px;
+  }
+
+  .timeline-point {
+    left: 8px;
+    width: 14px;
+    height: 14px;
+  }
+
+  .timeline-box {
+    margin-left: 38px;
+    padding: 20px 16px;
+    border-radius: var(--radius-sm);
+  }
+
+  .timeline-position {
+    font-size: 1.15rem;
+  }
+
+  .timeline-org {
+    font-size: 0.82rem;
+    margin-bottom: 12px;
+  }
+
+  .timeline-summary {
+    font-size: 0.86rem;
+    line-height: 1.55;
+  }
+
+  /* Peer Audits Mobile */
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .testimonial-card-item {
+    padding: 22px 18px;
+    border-radius: var(--radius-sm);
+  }
+
+  .testimonial-quote-text {
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  /* Contact & Transmission Form Mobile */
+  .contact-direct-box,
+  .terminal-form-card {
+    padding: 22px 18px;
+    border-radius: var(--radius-sm);
+  }
+
+  .transmission-channel-item {
+    padding: 12px 14px;
+    gap: 12px;
+  }
+
+  .channel-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+  }
+
+  .channel-val {
+    font-size: 0.86rem;
+    word-break: break-all;
+  }
+
+  /* iOS Auto-Zoom Prevention (Ensure font-size >= 16px on inputs) */
+  .form-input-cinematic,
+  .form-textarea-cinematic,
+  .palette-search-input,
+  .term-input {
+    font-size: 16px !important;
+  }
+
+  /* Command Palette Modal Mobile */
+  .command-palette-modal {
+    width: calc(100% - 24px);
+    max-height: 85vh;
+    top: 6%;
+    transform: translate(-50%, -10px) scale(0.98);
+    border-radius: var(--radius-sm);
+  }
+
+  .palette-search-bar {
+    padding: 12px 14px;
+  }
+
+  .palette-item {
+    padding: 10px 12px;
+    font-size: 0.82rem;
+  }
+
+  .palette-item-kbd {
+    display: none;
+  }
+
+  /* HUD Toast Mobile */
+  .hud-toast {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    width: auto;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.76rem;
+    padding: 10px 16px;
+  }
+
+  /* Footer Mobile */
+  .footer-cinematic {
+    padding: 44px 0 28px;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  .footer-social-row {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+/* ==========================================================================
+   Breakpoint: Compact Phones (max-width: 480px)
+   ========================================================================== */
+@media (max-width: 480px) {
+  .navbar {
+    top: 6px;
+    padding: 0 10px;
+  }
+
+  .nav-container {
+    height: 52px;
+    padding: 0 10px;
+  }
+
+  .brand-text {
+    font-size: 0.88rem;
+  }
+
   .brand-text span {
     display: none;
   }
-  .hero-title {
-    font-size: 1.85rem;
+
+  .audio-toggle-btn {
+    display: none;
   }
+
+  .cmd-trigger-btn kbd {
+    display: none;
+  }
+
+  .cmd-trigger-btn {
+    padding: 5px 10px;
+    font-size: 0.72rem;
+  }
+
+  .spec-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .hero-telemetry-tag {
+    font-size: 0.7rem;
+    padding: 4px 12px;
+    gap: 6px;
+  }
+
+  .timeline-track::before {
+    left: 10px;
+  }
+
+  .timeline-point {
+    left: 5px;
+    width: 12px;
+    height: 12px;
+  }
+
+  .timeline-box {
+    margin-left: 30px;
+    padding: 16px 12px;
+  }
+}
+
+/* ==========================================================================
+   Breakpoint: Extra Narrow Devices (max-width: 360px)
+   ========================================================================== */
+@media (max-width: 360px) {
+  .hero-title {
+    font-size: 1.75rem;
+  }
+
   .telemetry-strip {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 12px;
   }
-  .telemetry-value {
-    font-size: 1.3rem;
-  }
-  .hero-actions .btn {
+
+  .skill-filter-btn {
     width: 100%;
-  }
-  .terminal-tabs {
-    display: none;
+    text-align: center;
   }
 }

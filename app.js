@@ -104,7 +104,7 @@
   // =========================================================================
   function initLiveClock() {
     const clockEl = document.getElementById('liveClock');
-    if (!clockEl) return;
+    const mobileClockEl = document.getElementById('mobileLiveClock');
 
     function update() {
       const now = new Date();
@@ -116,7 +116,9 @@
         minute: '2-digit',
         second: '2-digit'
       });
-      clockEl.textContent = `${timeStr} WIB`;
+      const formatted = `${timeStr} WIB`;
+      if (clockEl) clockEl.textContent = formatted;
+      if (mobileClockEl) mobileClockEl.textContent = formatted;
     }
 
     update();
@@ -148,27 +150,29 @@
     }
     animateSpotlight();
 
-    // 3D Card Tilt on Hover
-    const tiltCards = document.querySelectorAll('[data-tilt]');
-    tiltCards.forEach((card) => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const rotateX = ((y - centerY) / centerY) * -5;
-        const rotateY = ((x - centerX) / centerX) * 5;
+    // 3D Card Tilt on Hover (Only for pointer devices with hover capability)
+    if (window.matchMedia && window.matchMedia('(hover: hover)').matches) {
+      const tiltCards = document.querySelectorAll('[data-tilt]');
+      tiltCards.forEach((card) => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = ((y - centerY) / centerY) * -5;
+          const rotateY = ((x - centerX) / centerX) * 5;
 
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
-        card.style.setProperty('--mouse-x', `${x}px`);
-        card.style.setProperty('--mouse-y', `${y}px`);
-      });
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+          card.style.setProperty('--mouse-x', `${x}px`);
+          card.style.setProperty('--mouse-y', `${y}px`);
+        });
 
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+        });
       });
-    });
+    }
   }
 
   // =========================================================================
@@ -488,14 +492,57 @@
         const scaleX = hyperCanvas.width / rect.width;
         const scaleY = hyperCanvas.height / rect.height;
         const currentStroke = strokes[strokes.length - 1];
-        currentStroke.points.push({
-          x: (e.clientX - rect.left) * scaleX,
-          y: (e.clientY - rect.top) * scaleY
-        });
-        drawDemoCurves();
+        if (currentStroke) {
+          currentStroke.points.push({
+            x: (e.clientX - rect.left) * scaleX,
+            y: (e.clientY - rect.top) * scaleY
+          });
+          drawDemoCurves();
+        }
       });
 
       window.addEventListener('mouseup', () => {
+        isDrawing = false;
+      });
+
+      // Touch handlers for mobile devices
+      hyperCanvas.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+          isDrawing = true;
+          const touch = e.touches[0];
+          const rect = hyperCanvas.getBoundingClientRect();
+          const scaleX = hyperCanvas.width / rect.width;
+          const scaleY = hyperCanvas.height / rect.height;
+          strokes.push({
+            color: '#fbbf24',
+            points: [{ x: (touch.clientX - rect.left) * scaleX, y: (touch.clientY - rect.top) * scaleY }]
+          });
+          sound.playClick(920, 0.02);
+        }
+      }, { passive: true });
+
+      hyperCanvas.addEventListener('touchmove', (e) => {
+        if (!isDrawing || e.touches.length !== 1) return;
+        const touch = e.touches[0];
+        const coordEl = document.getElementById('canvasCoords');
+        const rect = hyperCanvas.getBoundingClientRect();
+        const x = Math.round(touch.clientX - rect.left);
+        const y = Math.round(touch.clientY - rect.top);
+        if (coordEl) coordEl.textContent = `X: ${x} | Y: ${y}`;
+
+        const scaleX = hyperCanvas.width / rect.width;
+        const scaleY = hyperCanvas.height / rect.height;
+        const currentStroke = strokes[strokes.length - 1];
+        if (currentStroke) {
+          currentStroke.points.push({
+            x: (touch.clientX - rect.left) * scaleX,
+            y: (touch.clientY - rect.top) * scaleY
+          });
+          drawDemoCurves();
+        }
+      }, { passive: true });
+
+      window.addEventListener('touchend', () => {
         isDrawing = false;
       });
 
@@ -636,18 +683,28 @@
     const isEnabled = sound.toggle();
     const audioToggleBtn = document.getElementById('audioToggleBtn');
     const audioStatusText = document.getElementById('audioStatusText');
+    const mobileAudioBtn = document.getElementById('mobileAudioToggleBtn');
+    const mobileAudioText = document.getElementById('mobileAudioStatusText');
 
-    if (audioToggleBtn) {
+    const updateBtn = (btn, textEl) => {
+      if (!btn) return;
       if (isEnabled) {
-        audioToggleBtn.classList.add('active');
-        if (audioStatusText) audioStatusText.textContent = 'FX ON';
-        sound.playSuccess();
-        showToast('Tactile Audio FX Activated');
+        btn.classList.add('active');
+        if (textEl) textEl.textContent = 'FX ON';
       } else {
-        audioToggleBtn.classList.remove('active');
-        if (audioStatusText) audioStatusText.textContent = 'FX OFF';
-        showToast('Audio FX Muted');
+        btn.classList.remove('active');
+        if (textEl) textEl.textContent = 'FX OFF';
       }
+    };
+
+    updateBtn(audioToggleBtn, audioStatusText);
+    updateBtn(mobileAudioBtn, mobileAudioText);
+
+    if (isEnabled) {
+      sound.playSuccess();
+      showToast('Tactile Audio FX Activated');
+    } else {
+      showToast('Audio FX Muted');
     }
   }
 
@@ -771,6 +828,80 @@
   }
 
   // =========================================================================
+  // 11. MOBILE NAVIGATION DRAWER CONTROLLER
+  // =========================================================================
+  function initMobileNav() {
+    const toggleBtn = document.getElementById('mobileMenuToggle');
+    const closeBtn = document.getElementById('mobileDrawerClose');
+    const backdrop = document.getElementById('mobileNavBackdrop');
+    const drawer = document.getElementById('mobileNavDrawer');
+    const mobileLinks = document.querySelectorAll('.mobile-nav-link, .mobile-nav-connect');
+    const mobileAudioBtn = document.getElementById('mobileAudioToggleBtn');
+
+    if (!toggleBtn || !drawer) return;
+
+    function openMobileNav() {
+      drawer.classList.add('active');
+      drawer.setAttribute('aria-hidden', 'false');
+      if (backdrop) backdrop.classList.add('active');
+      toggleBtn.classList.add('active');
+      toggleBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+      sound.playClick(620, 0.04);
+    }
+
+    function closeMobileNav() {
+      drawer.classList.remove('active');
+      drawer.setAttribute('aria-hidden', 'true');
+      if (backdrop) backdrop.classList.remove('active');
+      toggleBtn.classList.remove('active');
+      toggleBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      sound.playClick(440, 0.04);
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      if (drawer.classList.contains('active')) {
+        closeMobileNav();
+      } else {
+        openMobileNav();
+      }
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', closeMobileNav);
+    if (backdrop) backdrop.addEventListener('click', closeMobileNav);
+
+    // Close on navigation link click with smooth scroll
+    mobileLinks.forEach((link) => {
+      link.addEventListener('click', (e) => {
+        closeMobileNav();
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          e.preventDefault();
+          const target = document.querySelector(href);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    });
+
+    // Mobile Audio Button trigger
+    if (mobileAudioBtn) {
+      mobileAudioBtn.addEventListener('click', () => {
+        toggleAudioState();
+      });
+    }
+
+    // Keyboard ESC closes mobile nav
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && drawer.classList.contains('active')) {
+        closeMobileNav();
+      }
+    });
+  }
+
+  // =========================================================================
   // INITIALIZATION ON DOM READY
   // =========================================================================
   document.addEventListener('DOMContentLoaded', () => {
@@ -782,6 +913,7 @@
     initCommandPalette();
     initAudioToggle();
     initContactActions();
+    initMobileNav();
 
     // Attach subtle audio click to all buttons and links
     document.querySelectorAll('a, button, .interactive-click').forEach((el) => {
