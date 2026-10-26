@@ -1,0 +1,13 @@
+{
+  "name": "developer-portfolio",
+  "version": "1.0.0",
+  "description": "Modern programmer portfolio landing page built with pure HTML and CSS",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "keywords": ["portfolio", "programmer", "html", "css", "developer"],
+  "author": "Developer",
+  "license": "MIT"
+}
